@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - TechBol{% endblock %}
+
+{% block content %}
+<section class="page-hero mb-4">
+    <div class="row align-items-center g-3">
+        <div class="col-lg-8">
+            <h1 class="display-6 fw-bold mb-2">Gestion de inventario y ventas</h1>
+            <p class="mb-0">Panel principal para administrar productos, clientes y pedidos de TechBol.</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            <a href="{{ url_for('pedidos.crear') }}" class="btn btn-light fw-semibold">Registrar pedido</a>
+        </div>
+    </div>
+</section>
+
+<section class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-label">Productos</div>
+            <div class="metric-value">{{ resumen.productos }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-label">Clientes</div>
+            <div class="metric-value">{{ resumen.clientes }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-label">Pedidos</div>
+            <div class="metric-value">{{ resumen.pedidos }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-label">Stock total</div>
+            <div class="metric-value">{{ resumen.stock_total }}</div>
+        </div>
+    </div>
+</section>
+
+<section class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h5 section-title mb-0">Ultimos pedidos</h2>
+            <a href="{{ url_for('pedidos.index') }}" class="btn btn-sm btn-outline-primary">Ver todos</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in ultimos_pedidos %}
+                        <tr>
+                            <td>{{ pedido.fecha.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ pedido.cliente.nombre }}</td>
+                            <td>{{ pedido.producto.nombre }}</td>
+                            <td>{{ "%.2f"|format(pedido.monto) }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">Todavia no hay pedidos registrados.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
